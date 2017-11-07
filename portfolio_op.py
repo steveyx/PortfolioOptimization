@@ -49,7 +49,7 @@ results_frame = pd.DataFrame(results.T,columns=['ret','stdev','sharpe',stocks[0]
 max_sharpe_port = results_frame.iloc[results_frame['sharpe'].idxmax()]
 #locate positon of portfolio with minimum standard deviation
 min_vol_port = results_frame.iloc[results_frame['stdev'].idxmin()]
-print("abc") 
+
 #create scatter plot coloured by Sharpe Ratio
 plt.scatter(results_frame.stdev,results_frame.ret,c=results_frame.sharpe,cmap='RdYlBu')
 plt.xlabel('Volatility')
