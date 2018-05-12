@@ -66,4 +66,7 @@ plt.colorbar()
 plt.scatter(max_sharpe_port[1],max_sharpe_port[0],marker=(5,1,0),color='r',s=1000)
 #plot green star to highlight position of minimum variance portfolio
 plt.scatter(min_vol_port[1],min_vol_port[0],marker=(5,1,0),color='g',s=1000)
+figManager = plt.get_current_fig_manager()
+figManager.window.showMaximized()
+plt.savefig("figure_po.png")
 plt.show()
