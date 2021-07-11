@@ -1,7 +1,9 @@
 import pandas as pd
 from portfolio_optimize import PortfolioOptimization
-from portfolio_animation import portfolio_optimization_benchmark_animation
+from portfolio_visualize import PortfolioVisualize
+import numpy as np
 import time
+np.random.seed(2)
 
 
 if __name__ == "__main__":
@@ -30,7 +32,5 @@ if __name__ == "__main__":
     print(max_sharpe_port)
     # locate position of portfolio with minimum standard deviation
     min_vol_port = results_frame.iloc[results_frame['stdev'].idxmin()]
-    # portfolio_optimization_animation(results_frame, max_sharpe_port, min_vol_port, stocks, update_points=10)
-    portfolio_optimization_benchmark_animation(results_frame, best_indices, g_results,
-                                               max_sharpe_port, min_vol_port, stocks,
-                                               update_points=1, file_format="gif")
+    # PortfolioVisualize.visualize(results_frame, best_indices, g_results, max_sharpe_port, stocks)
+    PortfolioVisualize.visualize_simulation(results_frame, max_sharpe_port, min_vol_port)
