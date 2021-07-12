@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # convert daily stock prices into daily returns
     data = PortfolioOptimization.load_stock_data(stocks)
     # set number of runs of random portfolio weights
-    num_portfolios = 200
+    num_portfolios = 800
     t0 = time.time()
     results, initial_weights, best_indices = PortfolioOptimization.optimize_portfolio_by_simulation(
         df_stocks=data, n_portfolios=num_portfolios)
@@ -32,5 +32,5 @@ if __name__ == "__main__":
     print(max_sharpe_port)
     # locate position of portfolio with minimum standard deviation
     min_vol_port = results_frame.iloc[results_frame['stdev'].idxmin()]
-    # PortfolioVisualize.visualize(results_frame, best_indices, g_results, max_sharpe_port, stocks)
+    PortfolioVisualize.visualize(results_frame, best_indices, g_results, max_sharpe_port, stocks)
     PortfolioVisualize.visualize_simulation(results_frame, max_sharpe_port, min_vol_port)
