@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import pandas as pd
+import numpy as np
 plt.rcParams['font.family'] = 'monospace'
 
 
@@ -82,3 +84,96 @@ class PortfolioVisualize:
         fig_manager = plt.get_current_fig_manager()
         fig_manager.window.showMaximized()
         plt.show()
+
+    @staticmethod
+    def plot_benchmark_table(data=None):
+        if data is None:
+            data = [
+                {
+                    "Assets": 10,
+                    "Portfolios Simulation": 100000,
+                    "Learning Rate Gradient Descent": 0.05,
+                    "SR Simulation": 1.55,
+                    "SR Gradient Descent": 1.55,
+                    "Time Simulation": 40.9,
+                    "Time Gradient Descent": 0.03
+                },
+                {
+                    "Assets": 20,
+                    "Portfolios Simulation": 200000,
+                    "Learning Rate Gradient Descent": 0.05,
+                    "SR Simulation": 1.70,
+                    "SR Gradient Descent": 1.71,
+                    "Time Simulation": 71.0,
+                    "Time Gradient Descent": 2.5
+                },
+                {
+                    "Assets": 50,
+                    "Portfolios Simulation": 500000,
+                    "Learning Rate Gradient Descent": 0.05,
+                    "SR Simulation": 1.55,
+                    "SR Gradient Descent": 1.58,
+                    "Time Simulation": 203.9,
+                    "Time Gradient Descent": 4.1
+                },
+                {
+                    "Assets": 100,
+                    "Portfolios Simulation": 1000000,
+                    "Learning Rate Gradient Descent": 0.05,
+                    "SR Simulation": 1.41,
+                    "SR Gradient Descent": 1.51,
+                    "Time Simulation": 459.5,
+                    "Time Gradient Descent": 0.24,
+                }
+            ]
+        df = pd.DataFrame(data)
+        # df.rename(columns={
+        #     "Portfolios Simulation": "Portfolios\nSimulation",
+        #     "Learning Rate Gradient Descent": "Learning Rate\nGradient Descent",
+        #     "SR Gradient Descent": "SR\nGradient Descent",
+        #     "Time Gradient Descent": "Time\nGradient Descent"
+        # }, inplace=True)
+        col_labels = ["Assets", "Portfolios\nSimulation", "Learning Rate\nGradient Descent",
+                      "SR\nSimulation",
+                      "SR\nGradient Descent",
+                      "Time\nSimulation",
+                      "Time\nGradient Descent"]
+        df["Assets"] = df["Assets"].astype(int)
+        df["Portfolios Simulation"] = df["Portfolios Simulation"].astype(int)
+        fig = plt.figure(figsize=(8, 1.4), dpi=200)
+        ax = fig.add_axes([0.1, 0.1, 0.8, 0.8])
+        tables = []
+        ax.axis('off')
+        _values = df.values.tolist()
+        for i in range(len(df)):
+            _values[i][0], _values[i][1] = int(_values[i][0]), int(_values[i][1])
+        tab = ax.table(cellText=_values,
+                       cellLoc='center', rowLoc='center',
+                       colWidths=[0.07, 0.1, 0.15, 0.1, 0.15, 0.1, 0.15],
+                       colLabels=col_labels,
+                       # colColours=[None, None, None, "lightgreen", "lightgreen", "lightblue", "lightblue"],
+                       # rowLabels=df.index[_s:_e].tolist(),
+                       loc="left",
+                       bbox=[0.05, 0.02, .9, 0.95])
+        tables.append(tab)
+        for tab in tables:
+            # scalex, scaley = 1, 1
+            # tab.scale(scalex, scaley)
+            tab.auto_set_font_size(False)
+            tab.set_fontsize(7.5)
+            for key, cell in tab.get_celld().items():
+                cell.set_linewidth(0)
+        for row in range(len(df)+1):
+            tables[0][(row, 0)].set_facecolor("lightgray")
+            tables[0][(row, 1)].set_facecolor("lightgray")
+            tables[0][(row, 2)].set_facecolor("lightgray")
+            tables[0][(row, 3)].set_facecolor("lightgreen")
+            tables[0][(row, 4)].set_facecolor("lightgreen")
+            tables[0][(row, 5)].set_facecolor("lightblue")
+            tables[0][(row, 6)].set_facecolor("lightblue")
+        plt.subplots_adjust(wspace=0.4)
+        plt.savefig("data/benchmark_performance.png", dpi=300)
+
+
+if __name__ == "__main__":
+    PortfolioVisualize.plot_benchmark_table()

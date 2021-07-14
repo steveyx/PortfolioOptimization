@@ -3,16 +3,20 @@ from portfolio_optimize import PortfolioOptimization
 from portfolio_visualize import PortfolioVisualize
 import numpy as np
 import time
-np.random.seed(2)
+from yfinance_download import get_nastaq_symbols
+np.random.seed(12)
 
 
 if __name__ == "__main__":
     # list of stocks in portfolio
-    stocks = ['AAPL', 'TSLA', 'AMZN', 'MSFT', 'FB', 'GOOG']  #
+    stocks = ['AAPL', 'TSLA', 'AMZN', 'MSFT', 'FB', 'GOOG']
+    # or to download top stock symbols as belows
+    stocks = get_nastaq_symbols(n=20)
+
     # convert daily stock prices into daily returns
     data = PortfolioOptimization.load_stock_data(stocks)
     # set number of runs of random portfolio weights
-    num_portfolios = 800
+    num_portfolios = 200000
     t0 = time.time()
     results, initial_weights, best_indices = PortfolioOptimization.optimize_portfolio_by_simulation(
         df_stocks=data, n_portfolios=num_portfolios)
@@ -33,4 +37,4 @@ if __name__ == "__main__":
     # locate position of portfolio with minimum standard deviation
     min_vol_port = results_frame.iloc[results_frame['stdev'].idxmin()]
     PortfolioVisualize.visualize(results_frame, best_indices, g_results, max_sharpe_port, stocks)
-    PortfolioVisualize.visualize_simulation(results_frame, max_sharpe_port, min_vol_port)
+    # PortfolioVisualize.visualize_simulation(results_frame, max_sharpe_port, min_vol_port)
