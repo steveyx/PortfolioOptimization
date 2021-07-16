@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+
 np.random.seed(2)
 
 
@@ -72,6 +73,7 @@ class PortfolioOptimization:
             _std = np.sqrt(np.dot(stock_weights.T, np.dot(cov_mat, stock_weights))) * np.sqrt(252)
             _sha = _r / _std
             return _r, _std, _sha
+
         returns = df_stocks.pct_change()
         mean_ret = returns.mean()
         cov = returns.cov()
@@ -96,13 +98,9 @@ class PortfolioOptimization:
                 # stop search if no improvement
                 break
             _max = np.abs(_max_delta).max()
-            if _max < _d:
-                new_weights = _cur_weights + _res_sharpe_delta / _max * _d
-            else:
-                new_weights = _cur_weights + _res_sharpe_delta
-            _min = new_weights.min()
-            if _min < 0:
-                new_weights -= _min
+            _d_weights = _res_sharpe_delta / _max * _d if _max < _d else _res_sharpe_delta
+            new_weights = _cur_weights + _d_weights
+            new_weights[new_weights < 0] = 0.0
             new_weights /= np.sum(new_weights)
             _ret_i, _std_dev_i, _sharpe_i = cal_sharpe_ratio(mean_ret, cov, new_weights)
             if _sharpe_i > _cur_sharpe:
@@ -117,6 +115,16 @@ class PortfolioOptimization:
                     break
         return np.array(_results)
 
+    @staticmethod
+    def optimize_portfolio_scipy(df_stocks):
+        from porfolio_opt_scipy import maximize_sharpe_ratio_scipy
+        returns = df_stocks.pct_change()
+        mean_ret = returns.mean()
+        cov = returns.cov()
+        n_stocks = len(df_stocks.columns)
+        r = maximize_sharpe_ratio_scipy(mean_ret, cov, 0, n_stocks)
+        return r
+
 
 if __name__ == "__main__":
     # list of stocks in portfolio
@@ -126,6 +134,7 @@ if __name__ == "__main__":
     # set number of runs of random portfolio weights
     num_portfolios = 36
     import time
+
     t0 = time.time()
     results, initial_weights, best_indices = PortfolioOptimization.optimize_portfolio_by_simulation(
         df_stocks=data, n_portfolios=num_portfolios)
@@ -149,5 +158,3 @@ if __name__ == "__main__":
     # portfolio_optimization_benchmark_animation(results_frame, best_indices, g_results,
     #                                            max_sharpe_port, min_vol_port, stocks,
     #                                            update_points=1, file_format="gif")
-
-
