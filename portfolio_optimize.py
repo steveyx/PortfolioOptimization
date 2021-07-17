@@ -123,8 +123,8 @@ class PortfolioOptimization:
         mean_ret = returns.mean()
         cov = returns.cov()
         n_stocks = len(df_stocks.columns)
-        r = maximize_sharpe_ratio_scipy(mean_ret, cov, 0, n_stocks)
-        return r
+        _sr, _w = maximize_sharpe_ratio_scipy(mean_ret, cov, 0, n_stocks)
+        return _sr, _w
 
 
 if __name__ == "__main__":

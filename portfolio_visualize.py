@@ -94,8 +94,8 @@ class PortfolioVisualize:
                     "Portfolios Simulation": 100000,
                     "Learning Rate Gradient Descent": 0.05,
                     "SR Simulation": 1.55,
-                    "SR Gradient Descent": 1.55,
-                    "Time Simulation": 40.9,
+                    "SR Gradient Descent": 1.56,
+                    "Time Simulation": 39.9,
                     "Time Gradient Descent": 0.03
                 },
                 {
@@ -103,27 +103,27 @@ class PortfolioVisualize:
                     "Portfolios Simulation": 200000,
                     "Learning Rate Gradient Descent": 0.05,
                     "SR Simulation": 1.70,
-                    "SR Gradient Descent": 1.71,
-                    "Time Simulation": 71.0,
-                    "Time Gradient Descent": 2.5
+                    "SR Gradient Descent": 1.79,
+                    "Time Simulation": 67.1,
+                    "Time Gradient Descent": 0.03
                 },
                 {
                     "Assets": 50,
                     "Portfolios Simulation": 500000,
                     "Learning Rate Gradient Descent": 0.05,
-                    "SR Simulation": 1.55,
-                    "SR Gradient Descent": 1.58,
-                    "Time Simulation": 203.9,
-                    "Time Gradient Descent": 4.1
+                    "SR Simulation": 1.54,
+                    "SR Gradient Descent": 1.87,
+                    "Time Simulation": 204.1,
+                    "Time Gradient Descent": 0.12
                 },
                 {
                     "Assets": 100,
                     "Portfolios Simulation": 1000000,
                     "Learning Rate Gradient Descent": 0.05,
-                    "SR Simulation": 1.41,
-                    "SR Gradient Descent": 1.51,
-                    "Time Simulation": 459.5,
-                    "Time Gradient Descent": 0.24,
+                    "SR Simulation": 1.42,
+                    "SR Gradient Descent": 1.93,
+                    "Time Simulation": 394.7,
+                    "Time Gradient Descent": 0.26,
                 }
             ]
         df = pd.DataFrame(data)

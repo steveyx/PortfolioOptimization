@@ -14,8 +14,8 @@ def maximize_sharpe_ratio_scipy(mean_returns, covar_returns, risk_free_rate, n_p
     def f_sr(w, mean_ret, cov_ret, risk_free):
         _std_dev = np.sqrt(np.matmul(np.matmul(w, cov_ret), w.T))
         _ret = np.matmul(np.array(mean_ret), w.T) - risk_free
-        func = - np.sqrt(252) * (_ret / _std_dev)
-        return func
+        _sr = - np.sqrt(252) * (_ret / _std_dev)
+        return _sr
 
     mean_returns = mean_returns.values
     covar_returns = covar_returns.values
@@ -36,7 +36,8 @@ def maximize_sharpe_ratio_scipy(mean_returns, covar_returns, risk_free_rate, n_p
     # invoke minimize solver
     opt = optimize.minimize(f_sr, x0=x_init, args=(mean_returns, covar_returns, risk_free_rate),
                             method='SLSQP', bounds=_bounds, constraints=cons, tol=1.e-16)
-    return opt
+    _sr, _w = -opt.fun, opt.x.flatten()
+    return _sr, _w
 
 
 def maximize_sharpe_ratio_valentyn(mean_returns, covar_returns, risk_free_rate, n_portfolios):

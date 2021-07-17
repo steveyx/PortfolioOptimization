@@ -16,7 +16,7 @@ if __name__ == "__main__":
     # convert daily stock prices into daily returns
     data = PortfolioOptimization.load_stock_data(stocks)
     # set number of runs of random portfolio weights
-    num_portfolios = 100
+    num_portfolios = 1000
     t0 = time.time()
     results, initial_weights, best_indices = PortfolioOptimization.optimize_portfolio_by_simulation(
         df_stocks=data, n_portfolios=num_portfolios)
@@ -24,14 +24,13 @@ if __name__ == "__main__":
     g_results = PortfolioOptimization.optimize_portfolio_gradient_descent(
         data, initial_weights, delta=0.05)
     t2 = time.time()
-    sci_results = PortfolioOptimization.optimize_portfolio_scipy(data)
+    sr_sci, weights_sci = PortfolioOptimization.optimize_portfolio_scipy(data)
     t3 = time.time()
-    print("simulation cal time {}".format(t1 - t0))
-    print("gradient descent cal time {}".format(t2 - t1))
-    print("scipy cal time {}".format(t3 - t2))
-    print("best sharpe ratio by gradient descent: ", g_results[-1, 2])
-    print(sci_results)
-    print(g_results[-1, 3:])
+    print("simulation cpu time {}".format(t1 - t0))
+    print("gradient descent cpu time {}".format(t2 - t1))
+    print("scipy cpu time {}".format(t3 - t2))
+    print("best sharpe ratio by gradient descent: {}, weights {}".format(g_results[-1, 2], g_results[-1, 3:]))
+    print("best sharpe ratio by scipy: {}, weights {}".format(sr_sci, weights_sci))
 
     # convert results array to Pandas DataFrame
     cols = ['ret', 'stdev', 'sharpe'] + stocks
@@ -42,4 +41,5 @@ if __name__ == "__main__":
     # locate position of portfolio with minimum standard deviation
     min_vol_port = results_frame.iloc[results_frame['stdev'].idxmin()]
     PortfolioVisualize.visualize(results_frame, best_indices, g_results, max_sharpe_port, stocks)
-    # PortfolioVisualize.visualize_simulation(results_frame, max_sharpe_port, min_vol_port)
+    PortfolioVisualize.visualize_simulation(results_frame, max_sharpe_port, min_vol_port)
+    PortfolioVisualize.plot_benchmark_table()
