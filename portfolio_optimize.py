@@ -1,5 +1,7 @@
 import numpy as np
 import pandas as pd
+from porfolio_other_optimizations import maximize_sharpe_ratio_scipy
+from porfolio_other_optimizations import maximize_sharpe_ratio_valentyn
 
 np.random.seed(2)
 
@@ -117,7 +119,6 @@ class PortfolioOptimization:
 
     @staticmethod
     def optimize_portfolio_scipy(df_stocks):
-        from porfolio_opt_scipy import maximize_sharpe_ratio_scipy
         returns = df_stocks.pct_change()
         mean_ret = returns.mean()
         cov = returns.cov()
